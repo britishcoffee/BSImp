@@ -73,18 +73,17 @@ MeH.t = function(vector,conditions,compare) {
 
 
 findgene = function(position) {
-  chr=unlist(position[1])
+  chr=as.character(position[1])
   #message(chr)
   BP=as.numeric(position[2])
   #message(BP)
-  St=unlist(position[3])
+  St=as.character(position[3])
+  Gene=geneloc$gene[which((geneloc$TSS<=BP)*(geneloc$TES>=BP)*(as.character(geneloc$chrom)==chr)*(as.character(geneloc$strand)==as.character(St))==1)][1]
   if (St=='f') {
-    Gene=geneloc$gene[which((geneloc$TSS<=BP)*(geneloc$TES>=BP)*(geneloc$chrom==chr)==1)][1]
-    promoter=geneloc$gene[which((geneloc$TSS-1000<=BP)*(geneloc$TSS+1000>=BP)*(geneloc$chrom==chr)==1)][1]
+    promoter=geneloc$gene[which((geneloc$TSS-1000<=BP)*(geneloc$TSS+1000>=BP)*(as.character(geneloc$chrom)==chr)*(geneloc$strand=="f")==1)][1]
   }
   if (St=='r') {
-    Gene=geneloc$gene[which((geneloc$TSS<=BP)*(geneloc$TES>=BP)*(geneloc$chrom==chr)==1)][1]
-    promoter=geneloc$gene[which((geneloc$TES-1000<=BP)*(geneloc$TES+1000>=BP)*(geneloc$chrom==chr)==1)][1]
+    promoter=geneloc$gene[which((geneloc$TES-1000<=BP)*(geneloc$TES+1000>=BP)*(as.character(geneloc$chrom)==chr)*(geneloc$strand=="r")==1)][1]
   }
   return(list(chrom=chr,bin=BP,Gene=Gene,Promoter=promoter,strand=St))
 }
@@ -131,6 +130,10 @@ Comp1$DHR <- (Comp1$pvalue<0.05)*(abs(Comp1$delta)>1)
 
 ```R
 geneloc<-read.table('../genelist.txt',header=TRUE)
+colnames(geneloc)<-c("gene","chrom","strand","TSS","TES")
+geneloc$strand[as.character(geneloc$strand)=="+"]<-"f"
+geneloc$strand[as.character(geneloc$strand)=="-"]<-"r"
+
 ```
 <img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image7.png?raw=true" width="300">
 
