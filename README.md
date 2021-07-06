@@ -93,57 +93,19 @@ findgene = function(position) {
 #### Load files for analysis by first setting the work directory to where your files are located
 ```R
 setwd("~/MeHdata")
-Dest <- read.table('CG_Results.csv',header=TRUE,sep=",")
-Dest <- read.table('CHG_Results.csv',header=TRUE,sep=",")
-Dest <- read.table('CHH_Results.csv',header=TRUE,sep=",")
+CG <- read.table('CG_Results.csv',header=TRUE,sep=",")
+CHG <- read.table('CHG_Results.csv',header=TRUE,sep=",")
+CHH <- read.table('CHH_Results.csv',header=TRUE,sep=",")
 ```
 
 <img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image1.png?raw=true" width="600">
 
 #### Remove rows with no data
 ```R
-Dest=Dest[which(apply(Dest,1,function(x) sum(is.na(x)))==0),]
+CG=CG[which(apply(CG,1,function(x) sum(is.na(x)))==0),]
 ```
 
 <img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image2.png?raw=true" width="600">
-
-#### Construct bins of 400bp (default, can be changed to any even number) and add a column of bin position to data
-```R
-bin_size=400
-Dest$bin<-((Dest$pos-1) %/% bin_size)*bin_size+(bin_size/2)
-```
-
-<img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image3.png?raw=true" width="600">
-
-#### Obtain names of samples (will be identical to names of the bam files provided if unchanged)
-```R
-samples=colnames(Dest)[which(!colnames(Dest) %in% c("chrom","pos","strand","bin"))]
-```
-
-<img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image4.png?raw=true" width="600">
-
-
-#### Obtain results (average methylation heterogeneity for the bins) by taking averages of methylation heterogeneity for windows within the same bins
-```R
-# assign("[samplename]",data.frame(Dest %>% group_by(chrom,bin,strand) %>% summarise(mean(samplename))))
-assign("C0031test1234",data.frame(Dest %>% group_by(chrom,bin,strand) %>% summarise(mean(C0031test1234))))
-assign("C0033test1234",data.frame(Dest %>% group_by(chrom,bin,strand) %>% summarise(mean(C0033test1234))))
-assign("C0035test1234",data.frame(Dest %>% group_by(chrom,bin,strand) %>% summarise(mean(C0035test1234))))
-assign("C0037test1234",data.frame(Dest %>% group_by(chrom,bin,strand) %>% summarise(mean(C0037test1234))))
-```
-
-#### Merging results from different samples into a matrix called "new"
-```R
-new=c()
-for (s in samples) {
-    data=get(s)
-    colnames(data)[4]=s
-    if (!is.null(new)) new = merge(new,data,by=c("chrom","bin","strand"))
-    else new=data
-}
-```
-
-<img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image5.png?raw=true" width="600">
 
 #### Define conditions of all samples; i.e., A and B for 2 conditions, each with two replicates, samples 1 and 2 are replicates of A and samples 3 and 4 are replicates for B. This is for comparisons to be carried out later on
 
