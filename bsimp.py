@@ -1068,13 +1068,10 @@ if __name__ == "__main__":
     end = time.time()
     
     for i in range(topp.shape[0]):
-        #print('i = ',i)
         print('Sample', topp.iloc[i,1],'has coverage',topp.iloc[i,2],'for context',topp.iloc[i,0],'out of data coverage',topp.iloc[i,3])
-        logm('Sample '+str(topp.iloc[i,1])+' has coverage '+str(topp.iloc[i,2])+' for context '+str(topp.iloc[i,0])+' out of data coverage '+str(topp.iloc[i,3])+ '.')
+        #logm('Sample '+str(topp.iloc[i,1])+' has coverage '+str(topp.iloc[i,2])+' for context '+str(topp.iloc[i,0])+' out of data coverage '+str(topp.iloc[i,3])+ '.')
 
 
 # Imp
 # /MH/OTU5/
-# python impmlonly.py -w 4 -c 60 --CG
-# only for CG
 # FINAL FINAL Nov3
