@@ -51,7 +51,7 @@ sudo pip3 install MeHscr
 
 ### 1. Download genome_scr.py
 ```js
-wget https://raw.githubusercontent.com/britishcoffee/BSImp/MeHscr.py
+wget https://raw.githubusercontent.com/britishcoffee/BSImp/bsimp.py
 ```
 ### 2. Open a folder named "MeHdata" under the same directory
 ```js
@@ -208,25 +208,21 @@ Use the scrpit **MeHscr.py** to calculated the methylation heterogeneity.
 ##### Usage
 
 ```ruby
-$ python MeHscr.py -h
-	
-  usage: MeHscr.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG]
-                   [--CHG] [--CHH]
+$ python bsimp.py -h
+usage: bsimp.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG] [--CHG] [--CHH]
+                [-mC MINDEPTH]
 
-  optional arguments:
-    -h, --help            show this help message and exit
-    -w WINDOWSIZE, --windowsize WINDOWSIZE
-                          number of CGs
-    -c CORES, --cores CORES
-                          number of cores
-    -m MEH, --MeH MEH     Methylation heterogeneity score 1:Abundance 2:PW
-                          3:Phylogeny [Default: 2]
-    -d DIST, --dist DIST  Distance between methylation patterns 1:Hamming 2:WDK [Default: 1]
-    --CG                  Include genomic context CG
-    --CHG                 Include genomic context CHG
-    --CHH                 Include genomic context CHH
-    --opt                 Outputs compositions of methylation patterns
-    --mlv                 Outputs methylation levels
+optional arguments:
+  -h, --help            show this help message and exit
+  -w WINDOWSIZE, --windowsize WINDOWSIZE
+                        number of CGs
+  -c CORES, --cores CORES
+                        number of cores
+  --CG                  Include genomic context CG
+  --CHG                 Include genomic context CHG
+  --CHH                 Include genomic context CHH
+  -mC MINDEPTH, --mindepth MINDEPTH
+                        Minimum depth per cytosine
 
 ```
 
