@@ -51,7 +51,7 @@ sudo pip3 install MeHscr
 
 ### 1. Download bsimp.py
 ```js
-wget https://raw.githubusercontent.com/britishcoffee/BSImp/bsimp.py
+wget https://raw.githubusercontent.com/britishcoffee/BSImp/main/bsimp.py
 ```
 ### 2. Open a folder named "MeHdata" under the same directory
 ```js
