@@ -1078,6 +1078,6 @@ if __name__ == "__main__":
 
 # Imp
 # /MH/OTU5/
-# python impmlonly.py -w 4 -c 60 --CG --opt
+# python impmlonly.py -w 4 -c 60 --CG
 # only for CG
 # FINAL FINAL Nov3
