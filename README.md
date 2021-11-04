@@ -49,7 +49,7 @@ sudo pip3 install MeHscr
 ```
 ## Genome screening of imputation and methylation profiling
 
-### 1. Download genome_scr.py
+### 1. Download bsimp.py
 ```js
 wget https://raw.githubusercontent.com/britishcoffee/BSImp/bsimp.py
 ```
