@@ -988,13 +988,13 @@ if __name__ == "__main__":
             for c in chromosomes:
                 res_dir = Folder + con + '_'+ file + '.csv'
                 toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
-                if os.path.exists(res_dir):
+                if os.path.exists(res_dir) and os.path.exists(toapp_dir):
                     Tomod = pd.read_csv(res_dir) 
                     Toappend = pd.read_csv(toapp_dir)
                     Tomod = Tomod.append(Toappend)
                     Tomod.to_csv(res_dir,index = False,header=True)
                     os.remove(toapp_dir)
-                else:
+                elif os.path.exists(toapp_dir):
                     Toappend = pd.read_csv(toapp_dir)
                     Toappend.to_csv(res_dir,index = False,header=True)
                     os.remove(toapp_dir)
@@ -1017,13 +1017,13 @@ if __name__ == "__main__":
             for c in chromosomes:
                 res_dir = Folder + con + '_'+ file + '.csv'
                 toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
-                if os.path.exists(res_dir):
+                if os.path.exists(res_dir) and os.path.exists(toapp_dir):
                     Tomod = pd.read_csv(res_dir) 
                     Toappend = pd.read_csv(toapp_dir)
                     Tomod = Tomod.append(Toappend)
                     Tomod.to_csv(res_dir,index = False,header=True)
                     os.remove(toapp_dir)
-                else:
+                elif os.path.exists(toapp_dir):
                     Toappend = pd.read_csv(toapp_dir)
                     Toappend.to_csv(res_dir,index = False,header=True)
                     os.remove(toapp_dir)
@@ -1044,13 +1044,13 @@ if __name__ == "__main__":
             for c in chromosomes:
                 res_dir = Folder + con + '_'+ file + '.csv'
                 toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
-                if os.path.exists(res_dir):
+                if os.path.exists(res_dir) and os.path.exists(toapp_dir):
                     Tomod = pd.read_csv(res_dir) 
                     Toappend = pd.read_csv(toapp_dir)
                     Tomod = Tomod.append(Toappend)
                     Tomod.to_csv(res_dir,index = False,header=True)
                     os.remove(toapp_dir)
-                else:
+                elif os.path.exists(toapp_dir):
                     Toappend = pd.read_csv(toapp_dir)
                     Toappend.to_csv(res_dir,index = False,header=True)
                     os.remove(toapp_dir)
