@@ -1,47 +1,35 @@
 # BSImp :
 
-:mega: DNA methylation heterogeneity (**MeH**) measures the epigenetic diversity within a cell population where the behaviour of individual cells can vary as differential responses to the environmental stimuli or dynamic progression of cellular development.
+:mega: Imputation recovers partially observed methylation patterns for the analysis of methylation heterogeneity at a large proportion of regions genomewide and also estimates methylation levels accurately.
 
-![Github All Releases](https://img.shields.io/github/downloads/britishcoffee/MeHscr/total.svg?style=for-the-badge)             ![issue](https://img.shields.io/github/issues/britishcoffee/MeHscr?style=for-the-badge)              ![star](https://img.shields.io/github/stars/britishcoffee/MeHscr?style=for-the-badge) 
+![Github All Releases](https://img.shields.io/github/downloads/britishcoffee/BSImp/total.svg?style=for-the-badge)             ![issue](https://img.shields.io/github/issues/britishcoffee/BSImp?style=for-the-badge)              ![star](https://img.shields.io/github/stars/britishcoffee/BSImp?style=for-the-badge) 
 
-
-
-
-
-<p align="center"><img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/MeHscr.png?raw=true" width="300"></p>
-
-
+<!-- <p align="center"><img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/MeHscr.png?raw=true" width="300"></p> -->
 
 
 ### Publication
 
-[Estimating methylation heterogeneity in bisulfite sequencing data by mathematical modelling. journal. doi: (2021)]()
+[BSImp: computational tool for completing partially observed methylation patterns for evaluating methylation heterogeneity. journal. doi: (2021)]()
 
 
-## Pipeline
+<!-- ## Pipeline
 
-<p align="center"><img src="./READMEimages/pipline.png"></p>
+<p align="center"><img src="./READMEimages/pipline.png"></p> -->
 
-### Documentation
+<!-- ### Documentation
 
-MeH users guide is available as a [PDF file](./Manual.pdf), containing the detail of each step. For questions please open an issue on [GitHub](https://github.com/britishcoffee/MeHscr/issues) or [contact me](#contact).
+MeH users guide is available as a [PDF file](./Manual.pdf), containing the detail of each step. For questions please open an issue on [GitHub](https://github.com/britishcoffee/MeHscr/issues) or [contact me](#contact). -->
 
 ##  Table of Contents
 
 * [System requirements](#system-requirements) 
-* [Installation](#Installation)
-* [Methylation heterogeneity profiling](#methylation-heterogeneity-profiling)
+<!--  * [Installation](#Installation) -->
+* [Genome screening of imputation and methylation profiling](#methylation-heterogeneity-profiling)
    * [Usages](#usages) 
    * [Examples](#examples) 
-* [Subsequent analysis](#subsequent-analysis)
-   *  [Example](#example)
-
-## System requirements
-* python 2.7 + 
-* pandas package 0.24 +
-* pysam package 0.16.0.1 +
-* joblib package
-
+<!-- * [Subsequent analysis](#subsequent-analysis)
+   *  [Example](#example) -->
+   
 ## System requirements
 
 * python 2.7 +
@@ -59,11 +47,11 @@ or
 sudo pip install MeHscr
 sudo pip3 install MeHscr
 ```
-## Methylation heterogeneity profiling
+## Genome screening of imputation and methylation profiling
 
 ### 1. Download genome_scr.py
 ```js
-wget https://raw.githubusercontent.com/britishcoffee/MeHscr/main/MeHscr.py
+wget https://raw.githubusercontent.com/britishcoffee/BSImp/MeHscr.py
 ```
 ### 2. Open a folder named "MeHdata" under the same directory
 ```js
@@ -97,6 +85,7 @@ ln -s [directory_to_reference_genome].fa* ./
     python MeHscr.py -w 4 -c 8 --CG --CHG --CHH -d 2
 ```
 
+<!--
 ### 6. Download DHR.R for subsequent analysis
 
 #### Load required packages and functions
@@ -213,13 +202,16 @@ Use the scrpit **MeHscr.py** to calculated the methylation heterogeneity.
   * .bam and .bam.bai files
   * .fa and .fa.fai of the reference genome 
 
+-->
+
+
 ##### Useage
 
 ```ruby
 $ python MeHscr.py -h
 	
-  usage: MeHscr.py [-h] [-w WINDOWSIZE] [-c CORES] [-m MEH] [-d DIST] [--CG]
-                   [--CHG] [--CHH] [--opt] [--mlv]
+  usage: MeHscr.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG]
+                   [--CHG] [--CHH]
 
   optional arguments:
     -h, --help            show this help message and exit
@@ -243,12 +235,11 @@ $ python MeHscr.py -h
 ```ruby
 # 'CG' only with window size of 4 cytosines and 4 cores parallel processing (default score is pairwise-similarity-based method, default distance between methylation patterns is Hamming distance)
 python MeHscr.py -w 4 -c 4 --CG
-# 'CG', 'CHG' and 'CHH' with window size of 4 cytosines, weighted degree kernel for pairwise distances between methylation patterns and 8 cores parallel processing
-python MeHscr.py -w 4 -c 8 --CG --CHG --CHH -d 2
 ```
 
 > The programme is running at folder "/MeHdata"
 
+<!--
 ##### Output
 
 * MeHscreening.log 
@@ -500,12 +491,9 @@ DHG Genebodys down: CHI3L1
 DHG Promoter up:  
 DHG Promoter down: CHI3L1, ATP1A1
 ```
-
-
+-->
 
 ## Contact
-
-
 
 [<img src="https://avatars.githubusercontent.com/u/30218118?v=4" width="100">](ytchang.sabrina@gmail.com) 
 
