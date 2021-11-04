@@ -167,7 +167,7 @@ def impute(window,w):
     return window 
 
 
-def CGgenome_scr(bamfile,chrom,w,fa,optional,mC=4,silence=False):
+def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
     filename, file_extension = os.path.splitext(bamfile)
     coverage = cov_context = 0
     # load bamfile
