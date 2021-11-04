@@ -984,21 +984,20 @@ if __name__ == "__main__":
         con='CG'
         CG=Parallel(n_jobs=args.cores)(delayed(CGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
         
-        if args.opt:
-            for file in bam_list:
-                for c in chromosomes:
-                    res_dir = Folder + con + '_'+ file + '.csv'
-                    toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
-                    if os.path.exists(res_dir):
-                        Tomod = pd.read_csv(res_dir) 
-                        Toappend = pd.read_csv(toapp_dir)
-                        Tomod = Tomod.append(Toappend)
-                        Tomod.to_csv(res_dir,index = False,header=True)
-                        os.remove(toapp_dir)
-                    else:
-                        Toappend = pd.read_csv(toapp_dir)
-                        Toappend.to_csv(res_dir,index = False,header=True)
-                        os.remove(toapp_dir)
+        for file in bam_list:
+            for c in chromosomes:
+                res_dir = Folder + con + '_'+ file + '.csv'
+                toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
+                if os.path.exists(res_dir):
+                    Tomod = pd.read_csv(res_dir) 
+                    Toappend = pd.read_csv(toapp_dir)
+                    Tomod = Tomod.append(Toappend)
+                    Tomod.to_csv(res_dir,index = False,header=True)
+                    os.remove(toapp_dir)
+                else:
+                    Toappend = pd.read_csv(toapp_dir)
+                    Toappend.to_csv(res_dir,index = False,header=True)
+                    os.remove(toapp_dir)
  
         
         logm("All done. "+str(len(bam_list))+" bam files processed and merged for CG.")
@@ -1014,21 +1013,20 @@ if __name__ == "__main__":
         
         logm("Merging within samples for CHG.")  
         # not into bins of 400bp
-        if args.opt:
-            for file in bam_list:
-                for c in chromosomes:
-                    res_dir = Folder + con + '_'+ file + '.csv'
-                    toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
-                    if os.path.exists(res_dir):
-                        Tomod = pd.read_csv(res_dir) 
-                        Toappend = pd.read_csv(toapp_dir)
-                        Tomod = Tomod.append(Toappend)
-                        Tomod.to_csv(res_dir,index = False,header=True)
-                        os.remove(toapp_dir)
-                    else:
-                        Toappend = pd.read_csv(toapp_dir)
-                        Toappend.to_csv(res_dir,index = False,header=True)
-                        os.remove(toapp_dir)
+        for file in bam_list:
+            for c in chromosomes:
+                res_dir = Folder + con + '_'+ file + '.csv'
+                toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
+                if os.path.exists(res_dir):
+                    Tomod = pd.read_csv(res_dir) 
+                    Toappend = pd.read_csv(toapp_dir)
+                    Tomod = Tomod.append(Toappend)
+                    Tomod.to_csv(res_dir,index = False,header=True)
+                    os.remove(toapp_dir)
+                else:
+                    Toappend = pd.read_csv(toapp_dir)
+                    Toappend.to_csv(res_dir,index = False,header=True)
+                    os.remove(toapp_dir)
  
  
         logm("All done. "+str(len(bam_list))+" bam files processed and merged for CHG.")
@@ -1042,21 +1040,20 @@ if __name__ == "__main__":
         con='CHH'
         CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
         
-        if args.opt:
-            for file in bam_list:
-                for c in chromosomes:
-                    res_dir = Folder + con + '_'+ file + '.csv'
-                    toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
-                    if os.path.exists(res_dir):
-                        Tomod = pd.read_csv(res_dir) 
-                        Toappend = pd.read_csv(toapp_dir)
-                        Tomod = Tomod.append(Toappend)
-                        Tomod.to_csv(res_dir,index = False,header=True)
-                        os.remove(toapp_dir)
-                    else:
-                        Toappend = pd.read_csv(toapp_dir)
-                        Toappend.to_csv(res_dir,index = False,header=True)
-                        os.remove(toapp_dir)
+        for file in bam_list:
+            for c in chromosomes:
+                res_dir = Folder + con + '_'+ file + '.csv'
+                toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
+                if os.path.exists(res_dir):
+                    Tomod = pd.read_csv(res_dir) 
+                    Toappend = pd.read_csv(toapp_dir)
+                    Tomod = Tomod.append(Toappend)
+                    Tomod.to_csv(res_dir,index = False,header=True)
+                    os.remove(toapp_dir)
+                else:
+                    Toappend = pd.read_csv(toapp_dir)
+                    Toappend.to_csv(res_dir,index = False,header=True)
+                    os.remove(toapp_dir)
  
         
         print("All done.",len(bam_list),"bam files processed and merged for CHH.")    
