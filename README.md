@@ -1,4 +1,4 @@
-# MeH :sheep:
+# BSImp :
 
 :mega: DNA methylation heterogeneity (**MeH**) measures the epigenetic diversity within a cell population where the behaviour of individual cells can vary as differential responses to the environmental stimuli or dynamic progression of cellular development.
 
