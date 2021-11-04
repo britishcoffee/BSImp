@@ -1,34 +1,4 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@britishcoffee 
-britishcoffee
-/
-BSImp
-Public
-1
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-BSImp/bsimp.py /
-@britishcoffee
-britishcoffee Update bsimp.py
-Latest commit 5dde822 1 minute ago
- History
- 1 contributor
-1070 lines (949 sloc)  56.5 KB
-   
+
 ##
 #---------------------------------------------------------------------
 # SERVER only input all files (.bam and .fa) output MeH matrix in .csv
