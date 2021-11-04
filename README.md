@@ -225,7 +225,7 @@ optional arguments:
 ```ruby
 # 'CG', 'CHG' and 'CHH' with window size of 4 cytosines and minimum depth for output of 8 reads
 # between methylation patterns and 8 cores parallel processing
-    python MeHscr.py -w 4 -c 8 --CG --CHG --CHH -mC 8
+    python bsimp.py -w 4 -c 8 --CG --CHG --CHH -mC 8
 ```
 
 
