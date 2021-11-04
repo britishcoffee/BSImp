@@ -292,7 +292,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     if depth>=mC:
                     # check if enough complete patterns for evaluating MeH
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',M=M,UM=UM,mC=mC,M=M,UM=UM)
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                 # remove 1 column
