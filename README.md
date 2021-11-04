@@ -71,19 +71,6 @@ ln -s [directory_to_reference_genome].fa* ./
 ```
 ### 5. Run the program genome_scr.py (see examples below)
 
-#### Examples
-
-```ruby
-# 'CG' only with window size of 4 cytosines and 4 cores parallel processing (default score is 
-# pairwise-similarity-based method, default distance between methylation patterns is Hamming distance)
-    python MeHscr.py -w 4 -c 4 --CG
-```
-
-```ruby
-# 'CG', 'CHG' and 'CHH' with window size of 4 cytosines, weighted degree kernel for pairwise distances 
-# between methylation patterns and 8 cores parallel processing
-    python MeHscr.py -w 4 -c 8 --CG --CHG --CHH -d 2
-```
 
 <!--
 ### 6. Download DHR.R for subsequent analysis
@@ -228,10 +215,19 @@ optional arguments:
 
 ##### Examples
 
+##### Examples
+
 ```ruby
-# 'CG' only with window size of 4 cytosines and 4 cores parallel processing (default score is pairwise-similarity-based method, default distance between methylation patterns is Hamming distance)
-python MeHscr.py -w 4 -c 4 --CG
+# 'CG' only with window size of 4 cytosines and 4 cores parallel processing (default minimum depth for output is 4 reads at a cytosine)
+    python bsimp.py -w 4 -c 4 --CG
 ```
+
+```ruby
+# 'CG', 'CHG' and 'CHH' with window size of 4 cytosines and minimum depth for output of 8 reads
+# between methylation patterns and 8 cores parallel processing
+    python MeHscr.py -w 4 -c 8 --CG --CHG --CHH -mC 8
+```
+
 
 > The programme is running at folder "/MeHdata"
 
