@@ -288,6 +288,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                     # check if enough complete patterns for evaluating MeH
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
@@ -327,6 +328,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='r',mC=mC)
@@ -360,6 +362,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='f',mC=mC)
@@ -398,6 +401,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='r',mC=mC)
@@ -523,6 +527,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='f',mC=mC)
@@ -557,6 +562,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='r',mC=mC)
@@ -591,6 +597,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='f',mC=mC)
@@ -629,6 +636,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='r',mC=mC)
@@ -760,6 +768,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='f',mC=mC)
@@ -793,6 +802,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='r',mC=mC)
@@ -828,6 +838,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='f',mC=mC)
@@ -866,6 +877,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     window = meth.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
                                             chrom=chrom,strand='r',mC=mC)
