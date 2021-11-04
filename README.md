@@ -205,7 +205,7 @@ Use the scrpit **MeHscr.py** to calculated the methylation heterogeneity.
 -->
 
 
-##### Useage
+##### Usage
 
 ```ruby
 $ python MeHscr.py -h
