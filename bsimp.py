@@ -292,7 +292,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     if depth>=mC:
                     # check if enough complete patterns for evaluating MeH
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC)
+                                            chrom=chrom,strand='f',M=M,UM=UM,mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                 # remove 1 column
@@ -331,7 +331,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC)
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
                 aggreR = aggreR.drop(meth.columns[0:1],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
@@ -365,7 +365,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC)
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                         if ResultPW.shape[0] % 100000 == 1:   
@@ -404,7 +404,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC)
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
                         if ResultPW.shape[0] % 100000 == 1:   
                             ResultPW.to_csv(r"MeHdata/CG_%s_%s.csv"%(filename,chrom),index = False, header=True)
@@ -530,7 +530,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC)
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                 aggreC = aggreC.drop(meth.columns[0:1],axis=1)
@@ -565,7 +565,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC)
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
                 aggreR = aggreR.drop(meth.columns[0:1],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
@@ -600,7 +600,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC)
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                         if ResultPW.shape[0] % 100000 == 1:   
@@ -639,7 +639,7 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC)
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
                         if ResultPW.shape[0] % 100000 == 1:
                             ResultPW.to_csv(r"MeHdata/CHH_%s_%s.csv"%(filename,chrom),index = False, header=True)
@@ -771,7 +771,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC)
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                 aggreC = aggreC.drop(meth.columns[0:1],axis=1)
@@ -805,7 +805,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC)
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                 aggreR = aggreR.drop(meth.columns[0:1],axis=1)
@@ -841,7 +841,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC)
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                         if ResultPW.shape[0] % 100000:
@@ -880,7 +880,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                     depth=M+UM
                     if depth>=mC:
                         toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC)
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
                         ResultPW=ResultPW.append(toappend)
 
                         if ResultPW.shape[0] % 100000 == 1:   
