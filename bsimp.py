@@ -1,3 +1,34 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@britishcoffee 
+britishcoffee
+/
+BSImp
+Public
+1
+00
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+BSImp/bsimp.py /
+@britishcoffee
+britishcoffee Update bsimp.py
+Latest commit 5dde822 1 minute ago
+ History
+ 1 contributor
+1070 lines (949 sloc)  56.5 KB
+   
 ##
 #---------------------------------------------------------------------
 # SERVER only input all files (.bam and .fa) output MeH matrix in .csv
@@ -969,7 +1000,7 @@ if __name__ == "__main__":
     #start=t.time()
     if args.CG:
         con='CG'
-        CG=Parallel(n_jobs=args.cores)(delayed(CGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,optional=args.opt,mC=args.mindepth) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
         
         if args.opt:
             for file in bam_list:
@@ -997,7 +1028,7 @@ if __name__ == "__main__":
           
     if args.CHG:
         con='CHG'
-        CG=Parallel(n_jobs=args.cores)(delayed(CHGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,optional=args.opt,mC=args.mindepth) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CHGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
         
         logm("Merging within samples for CHG.")  
         # not into bins of 400bp
@@ -1027,7 +1058,7 @@ if __name__ == "__main__":
         
     if args.CHH:
         con='CHH'
-        CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,optional=args.opt,mC=args.mindepth) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
         
         if args.opt:
             for file in bam_list:
