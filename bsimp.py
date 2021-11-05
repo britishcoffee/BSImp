@@ -941,6 +941,7 @@ parser.add_argument("--CG", default=False, action='store_true', help='Include ge
 parser.add_argument("--CHG", default=False, action='store_true', help='Include genomic context CHG')
 parser.add_argument("--CHH", default=False, action='store_true', help='Include genomic context CHH')
 parser.add_argument("-mC", "--mindepth",type=int, default=4, help='Minimum depth per cytosine')
+parser.add_argument('-f', "--foldername", default='MeHdata', type = str, help = 'Folder name of the location of input files' )
 
 
 args = parser.parse_args()
@@ -959,7 +960,8 @@ if __name__ == "__main__":
     #open_log('MeHscreening.log')
     
     #start = time.time()
-    Folder = 'MeHdata/'
+    #Folder = 'MeHdata/'
+    Folder = args.foldername + '/'
 
     files = os.listdir(Folder)
     bam_list = []
@@ -1000,7 +1002,7 @@ if __name__ == "__main__":
                     os.remove(toapp_dir)
  
         
-        logm("All done. "+str(len(bam_list))+" bam files processed and merged for CG.")
+        #logm("All done. "+str(len(bam_list))+" bam files processed and merged for CG.")
         for i in CG:
             toout=pd.DataFrame({'sample':i[0],'coverage':i[1],'context_coverage':i[2],'context':i[3]},index=[0])
             topp=topp.append(toout)
@@ -1029,7 +1031,7 @@ if __name__ == "__main__":
                     os.remove(toapp_dir)
  
  
-        logm("All done. "+str(len(bam_list))+" bam files processed and merged for CHG.")
+        #logm("All done. "+str(len(bam_list))+" bam files processed and merged for CHG.")
         
         for i in CG:
             toout=pd.DataFrame({'sample':i[0],'coverage':i[1],'context_coverage':i[2],'context':i[3]},index=[0])
@@ -1057,7 +1059,7 @@ if __name__ == "__main__":
  
         
         print("All done.",len(bam_list),"bam files processed and merged for CHH.")    
-        logm("All done. "+str(len(bam_list))+" bam files processed and merged for CHH.")
+        #logm("All done. "+str(len(bam_list))+" bam files processed and merged for CHH.")
         
         for i in CG:
             toout=pd.DataFrame({'sample':i[0],'coverage':i[1],'context_coverage':i[2],'context':i[3]},index=[0])
@@ -1072,6 +1074,4 @@ if __name__ == "__main__":
         #logm('Sample '+str(topp.iloc[i,1])+' has coverage '+str(topp.iloc[i,2])+' for context '+str(topp.iloc[i,0])+' out of data coverage '+str(topp.iloc[i,3])+ '.')
 
 
-# Imp
-# /MH/OTU5/
 # FINAL FINAL Nov3
