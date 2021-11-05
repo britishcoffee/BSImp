@@ -28,15 +28,15 @@ MeH users guide is available as a [PDF file](./Manual.pdf), containing the detai
    * [Usages](#usages) 
    * [Examples](#examples) 
 <!-- * [Subsequent analysis](#subsequent-analysis)
-   *  [Example](#example) -->
-   
+   *  [Example](#example) 
+-->
 ## System requirements
 
 * python 2.7 +
 * pandas package 0.24 +
 * pysam package 0.16.0.1 +
 * joblib package
-* 
+
 <!--
 ### Can be fulfilled by running one of the following lines
 ```js
@@ -55,11 +55,12 @@ sudo pip3 install MeHscr
 ```js
 wget https://raw.githubusercontent.com/britishcoffee/BSImp/main/bsimp.py
 ```
-### 2. Open a folder named "MeHdata" under the same directory
+### 2. Open a folder named "MeHdata" or anything you like under the same directory
 ```js
 mkdir MeHdata
+mkdir myinputfiles
 ```
-### 3. Place .bam and .bam.bai files of all samples you wish to obtain methylation heterogeneity profiles into folder MeHdata/
+### 3. Place .bam and .bam.bai files of all samples you wish to obtain methylation heterogeneity profiles into folder MeHdata/ or myinputfiles/
 ```js
 scp [directory_to_bamfiles_of_all_samples].bam* ./MeHdata
 # or within MeHdata/
@@ -199,7 +200,7 @@ Use the scrpit **MeHscr.py** to calculated the methylation heterogeneity.
 ```ruby
 $ python bsimp.py -h
 usage: bsimp.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG] [--CHG] [--CHH]
-                [-mC MINDEPTH]
+                [-mC MINDEPTH] [-f FOLDERNAME]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -212,6 +213,8 @@ optional arguments:
   --CHH                 Include genomic context CHH
   -mC MINDEPTH, --mindepth MINDEPTH
                         Minimum depth per cytosine
+  -f FOLDERNAME, --foldername FOLDERNAME
+                        Folder name of the location of input files
 
 ```
 
@@ -229,7 +232,6 @@ optional arguments:
 # between methylation patterns and 8 cores parallel processing
     python bsimp.py -w 4 -c 8 --CG --CHG --CHH -mC 8 -f MeHdata
 ```
-
 
 > The programme is running at folder "/MeHdata"
 
