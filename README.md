@@ -36,7 +36,8 @@ MeH users guide is available as a [PDF file](./Manual.pdf), containing the detai
 * pandas package 0.24 +
 * pysam package 0.16.0.1 +
 * joblib package
-
+* 
+<!--
 ### Can be fulfilled by running one of the following lines
 ```js
 pip install MeHscr
@@ -47,6 +48,7 @@ or
 sudo pip install MeHscr
 sudo pip3 install MeHscr
 ```
+-->
 ## Genome screening of imputation and methylation profiling
 
 ### 1. Download bsimp.py
@@ -219,13 +221,13 @@ optional arguments:
 
 ```ruby
 # 'CG' only with window size of 4 cytosines and 4 cores parallel processing (default minimum depth for output is 4 reads at a cytosine)
-    python bsimp.py -w 4 -c 4 --CG
+    python bsimp.py -w 4 -c 4 --CG 
 ```
 
 ```ruby
 # 'CG', 'CHG' and 'CHH' with window size of 4 cytosines and minimum depth for output of 8 reads
 # between methylation patterns and 8 cores parallel processing
-    python bsimp.py -w 4 -c 8 --CG --CHG --CHH -mC 8
+    python bsimp.py -w 4 -c 8 --CG --CHG --CHH -mC 8 -f MeHdata
 ```
 
 
