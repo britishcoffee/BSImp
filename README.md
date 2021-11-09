@@ -220,8 +220,6 @@ optional arguments:
 
 ##### Examples
 
-##### Examples
-
 ```ruby
 # 'CG' only with window size of 4 cytosines and 4 cores parallel processing (default minimum depth for output is 4 reads at a cytosine)
     python bsimp.py -w 4 -c 4 --CG 
