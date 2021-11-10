@@ -241,7 +241,7 @@ optional arguments:
 
 > The programme is running at folder "/MeHdata"
 
-<p align="center"><img src="https://github.com/britishcoffee/BSImp/blob/main/READMEimages/image1.png?raw=true" width="300"></p>
+<p align="center"><img src="https://github.com/britishcoffee/BSImp/blob/main/READMEimages/image1.png?raw=true" width="500"></p>
 
 
 <!--
