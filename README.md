@@ -241,8 +241,30 @@ optional arguments:
 
 > The programme is running at folder "/MeHdata"
 
+#####  One of the output file
 <p align="center"><img src="https://github.com/britishcoffee/BSImp/blob/main/READMEimages/image1.png?raw=true" width="500"></p>
 
+* chrom: chromosome
+* pos: (starting cytosine) position
+* p01: '0000' - UUUU - copy number of methylation pattern: all unmethylated
+* p02: '1000' - MUUU
+* p03: '0100' - UMUU
+* p04: '1100' - MMUU
+* p05: '0010' - UUMU
+* p06: '1010' - MUMU
+* p07: '0110' - UMMU
+* p08: '1110' - MMMU
+* p09: '0001' - UUUM
+* p10: '1001' - MUUM
+* p11: '0101' - UMUM
+* p12: '1101' - MMUM
+* p13: '0011' - UUMM
+* p14: '1011' - MUMM
+* p15: '0111' - UMMM
+* p16: '1111' - MMMM - copy number of methylation pattern: all methylated
+* M: # of methylated C
+* U: # of unmethylated C
+* strand: f(orward)/r(everse)
 
 <!--
 ##### Output
