@@ -51,11 +51,13 @@ sudo pip3 install MeHscr
 -->
 ## Genome screening of imputation and methylation profiling
 
-### 1. Download bsimp.py
+### 1. Download example folder or script bsimp.py 
 ```js
+git clone https://github.com/britishcoffee/BSImp.git
+cd BSImp
 wget https://raw.githubusercontent.com/britishcoffee/BSImp/main/bsimp.py
 ```
-### 2. Open a folder named "MeHdata" or anything you like under the same directory
+### (Optional) 2. Open a folder named "MeHdata" or anything you like under the same directory
 ```js
 mkdir MeHdata
 mkdir myinputfiles
