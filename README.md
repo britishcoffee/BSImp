@@ -137,7 +137,7 @@ CHG <- read.table('CHG_Results.csv',header=TRUE,sep=",")
 CHH <- read.table('CHH_Results.csv',header=TRUE,sep=",")
 ```
 
-<img src="https://github.com/britishcoffee/Methylationhet/blob/main/READMEimages/image1.png?raw=true" width="600">
+<img src="https://github.com/britishcoffee/BSImp/blob/main/READMEimages/image1.png?raw=true" width="600">
 
 #### Define conditions of all samples; i.e., A and B for 2 conditions, each with two replicates, samples 1 and 2 are replicates of A and samples 3 and 4 are replicates for B. This is for comparisons to be carried out later on
 
