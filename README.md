@@ -244,8 +244,17 @@ optional arguments:
 #####  One of the output file
 <p align="center"><img src="https://github.com/britishcoffee/BSImp/blob/main/READMEimages/image1.png?raw=true" width="500"></p>
 
-* chrom: chromosome
-* pos: (starting cytosine) position
+
+> Format desctiptions:
+>
+> (1) chrom: chromsome
+> (2) bin: position (of bin), specified to be at the centre of the bin; i.e. 600 means (400,800]
+> (3) strand: f(orward)/r(everse)
+> (4)-(6) Methlyation heterogeneity for each sample specified by the column header
+
+
+> (1) chrom: chromosome
+> (2) pos: (starting cytosine) position for methylation patterns and position for read copy number
 * p01: '0000' - UUUU - copy number of methylation pattern: all unmethylated
 * p02: '1000' - MUUU
 * p03: '0100' - UMUU
@@ -262,9 +271,9 @@ optional arguments:
 * p14: '1011' - MUMM
 * p15: '0111' - UMMM
 * p16: '1111' - MMMM - copy number of methylation pattern: all methylated
-* M: # of methylated C
-* U: # of unmethylated C
-* strand: f(orward)/r(everse)
+> (3) M: # of methylated C/G 
+> (4) UM: # of unmethylated C/G (T/A)
+> (5) strand: f(orward)/r(everse)
 
 <!--
 ##### Output
