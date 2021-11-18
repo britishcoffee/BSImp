@@ -246,15 +246,9 @@ optional arguments:
 
 
 > Format desctiptions:
->
-> (1) chrom: chromsome
-> (2) bin: position (of bin), specified to be at the centre of the bin; i.e. 600 means (400,800]
-> (3) strand: f(orward)/r(everse)
-> (4)-(6) Methlyation heterogeneity for each sample specified by the column header
-
-
 > (1) chrom: chromosome
 > (2) pos: (starting cytosine) position for methylation patterns and position for read copy number
+> (3)-(18) pxx: copy number of methylation pattern
 * p01: '0000' - UUUU - copy number of methylation pattern: all unmethylated
 * p02: '1000' - MUUU
 * p03: '0100' - UMUU
@@ -271,9 +265,9 @@ optional arguments:
 * p14: '1011' - MUMM
 * p15: '0111' - UMMM
 * p16: '1111' - MMMM - copy number of methylation pattern: all methylated
-> (3) M: # of methylated C/G 
-> (4) UM: # of unmethylated C/G (T/A)
-> (5) strand: f(orward)/r(everse)
+> (19) M: # of methylated C/G 
+> (20) UM: # of unmethylated C/G (T/A)
+> (21) strand: f(orward)/r(everse)
 
 <!--
 ##### Output
