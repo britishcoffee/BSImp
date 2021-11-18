@@ -80,7 +80,7 @@ scp [directory_to_reference_genome].fa* ./MeHdata
 # or within MeHdata/
 ln -s [directory_to_reference_genome].fa* ./
 ```
-### 5. Run the program genome_scr.py (see examples below)
+### 5. Run the program bsimp.py (see examples below)
 
 
 <!--
