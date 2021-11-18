@@ -12,9 +12,10 @@
 [BSImp: imputing partially observed methylation patterns for evaluating methylation heterogeneity. journal. doi: (2022)]()
 
 
-<!-- ## Pipeline
+## Pipeline
 
-<p align="center"><img src="./READMEimages/pipline.png"></p> -->
+<!-- <p align="center"><img src="./READMEimages/BSImp.png"></p> -->
+<p align="center"><img src="https://github.com/britishcoffee/BSImp/blob/main/READMEimages/BSImp.png?raw=true" width="600"></p> 
 
 <!-- ### Documentation
 
