@@ -9,7 +9,7 @@
 
 ### Publication
 
-[BSImp: computational tool for completing partially observed methylation patterns for evaluating methylation heterogeneity. journal. doi: (2021)]()
+[BSImp: imputing partially observed methylation patterns for evaluating methylation heterogeneity. journal. doi: (2022)]()
 
 
 <!-- ## Pipeline
