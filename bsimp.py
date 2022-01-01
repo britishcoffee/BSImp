@@ -1,3 +1,4 @@
+# Dec 21 to mod for optional outputting original counts
 
 ##
 #---------------------------------------------------------------------
@@ -71,29 +72,54 @@ def impute(window,w):
             #print("s = ",np.float64(s))
     return window 
    
-def outwindow(pat,pos,chrom,w,M,UM,mC=4,strand='f'): 
+def outwindow(pat,patori,pos,chrom,w,M,UM,Mo,UMo,mC=4,strand='f',optional=False): 
     
     # get complete reads
+    tempori=np.isnan(patori).sum(axis=1)==0
+    patori=patori[np.where(tempori)[0],:]
+    
+    countori=np.zeros((2**w,1))
+    
     temp=np.isnan(pat).sum(axis=1)==0
     pat=pat[np.where(temp)[0],:]
     
     count=np.zeros((2**w,1))
-    m=np.shape(pat)[0]
+    
+    # m=np.shape(pat)[0]
     
     pat=np.array(pat)
     if w==2:
         pat = Counter([str(i[0])+str(i[1]) for i in pat.astype(int).tolist()])
         count=np.array([float(pat[i]) for i in ['00','10','01','11']])
+        
+        if optional:
+            patori = Counter([str(i[0])+str(i[1]) for i in patori.astype(int).tolist()])
+            countori=np.array([float(patori[i]) for i in ['00','10','01','11']])
+        
     if w==3:
         pat = Counter([str(i[0])+str(i[1])+str(i[2]) for i in pat.astype(int).tolist()])
         count=np.array([float(pat[i]) for i in ['000','100','010','110','001','101','011','111']])
+        
+        if optional:
+            patori = Counter([str(i[0])+str(i[1])+str(i[2]) for i in patori.astype(int).tolist()])
+            countori=np.array([float(patori[i]) for i in ['000','100','010','110','001','101','011','111']])
+    
     if w==4:
         pat = Counter([str(i[0])+str(i[1])+str(i[2])+str(i[3]) for i in pat.astype(int).tolist()])
         count=np.array([float(pat[i]) for i in ['0000','1000','0100','1100','0010','1010','0110','1110','0001',\
                                 '1001','0101','1101','0011','1011','0111','1111']])
+        if optional:
+            patori = Counter([str(i[0])+str(i[1])+str(i[2])+str(i[3]) for i in patori.astype(int).tolist()])
+            countori=np.array([float(patori[i]) for i in ['0000','1000','0100','1100','0010','1010','0110','1110','0001',\
+                                '1001','0101','1101','0011','1011','0111','1111']])
     if w==5:
         pat = Counter([str(i[0])+str(i[1])+str(i[2])+str(i[3])+str(i[4]) for i in pat.astype(int).tolist()])
         count=np.array([float(pat[i]) for i in ['00000','10000','01000','11000','00100','10100','01100','11100','00010',\
+                                '10010','01010','11010','00110','10110','01110','11110','00001','10001','01001','11001','00101',\
+                                '10101','01101','11101','00011','10011','01011','11011','00111','10111','01111','11111']])
+        if optional:
+            patori = Counter([str(i[0])+str(i[1])+str(i[2])+str(i[3])+str(i[4]) for i in patori.astype(int).tolist()])
+            countori = np.array([float(patori[i]) for i in ['00000','10000','01000','11000','00100','10100','01100','11100','00010',\
                                 '10010','01010','11010','00110','10110','01110','11110','00001','10001','01001','11001','00101',\
                                 '10101','01101','11101','00011','10011','01011','11011','00111','10111','01111','11111']])
     if w==6:
@@ -104,18 +130,44 @@ def outwindow(pat,pos,chrom,w,M,UM,mC=4,strand='f'):
                                 '000001','100001','010001','110001','001001','101001','011001','111001','000101',\
                                 '100101','010101','110101','001101','101101','011101','111101','000011','100011','010011','110011','001011',\
                                 '101011','011011','111011','000111', '100111','010111','110111','001111','101111','011111','111111']])
+        if optional:
+            patori = Counter([str(i[0])+str(i[1])+str(i[2])+str(i[3])+str(i[4])+str(i[5]) for i in patori.astype(int).tolist()])
+            countori = np.array([float(patori[i]) for i in ['000000','100000','010000','110000','001000','101000','011000','111000','000100',\
+                                '100100','010100','110100','001100','101100','011100','111100','000010','100010','010010','110010','001010',\
+                                '101010','011010','111010','000110', '100110','010110','110110','001110','101110','011110','111110',\
+                                '000001','100001','010001','110001','001001','101001','011001','111001','000101',\
+                                '100101','010101','110101','001101','101101','011101','111101','000011','100011','010011','110011','001011',\
+                                '101011','011011','111011','000111', '100111','010111','110111','001111','101111','011111','111111']])
     
     count=count.reshape(2**w)
     count=np.concatenate((count[[0]],count))
-    if w==3:
+    
+    countori=countori.reshape(2**w)
+    countori=np.concatenate((countori[[0]],countori))
+    
+    if w==3 and not optional:
         opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
                         'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'M':M,'UM':UM,'strand':strand}, index=[0])     
-    if w==4:
+    if w==3 and optional:
+            opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
+                        'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p01o':countori[1],'p02o':countori[2],'p03o':countori[3],'p04o':countori[4],\
+                        'p05o':countori[5],'p06o':countori[6],'p07o':countori[7],'p08o':countori[8],'M':M,'UM':UM,'Mo':Mo,'UMo':UMo,'strand':strand}, index=[0])     
+        
+    if w==4 and not optional:
         opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
                         'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p09':count[9],'p10':count[10],\
                         'p11':count[11],'p12':count[12],'p13':count[13],'p14':count[14],'p15':count[15],\
                         'p16':count[16],'M':M,'UM':UM,'strand':strand}, index=[0])   
-    if w==5:
+    
+    if w==4 and optional:
+            opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
+                        'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p09':count[9],'p10':count[10],\
+                        'p11':count[11],'p12':count[12],'p13':count[13],'p14':count[14],'p15':count[15],\
+                        'p16':count[16],'p01o':countori[1],'p02o':countori[2],'p03o':countori[3],'p04o':countori[4],\
+                        'p05o':countori[5],'p06o':countori[6],'p07o':countori[7],'p08o':countori[8],'p09o':countori[9],'p10o':countori[10],\
+                        'p11o':countori[11],'p12o':countori[12],'p13o':countori[13],'p14o':countori[14],'p15o':countori[15],\
+                        'p16o':countori[16],'M':M,'UM':UM,'Mo':Mo,'UMo':UMo,'strand':strand}, index=[0])   
+    if w==5 and not optional:
         opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
                         'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p09':count[9],'p10':count[10],\
                         'p11':count[11],'p12':count[12],'p13':count[13],'p14':count[14],'p15':count[15],\
@@ -123,7 +175,22 @@ def outwindow(pat,pos,chrom,w,M,UM,mC=4,strand='f'):
                         'p21':count[21],'p22':count[22],'p23':count[23],'p24':count[24],'p25':count[25],\
                         'p26':count[26],'p27':count[27],'p28':count[28],'p29':count[29],'p30':count[30],\
                         'p31':count[31],'p32':count[32],'M':M,'UM':UM,'strand':strand}, index=[0])    
-    if w==6:
+    
+    if w==5 and optional:
+            opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
+                        'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p09':count[9],'p10':count[10],\
+                        'p11':count[11],'p12':count[12],'p13':count[13],'p14':count[14],'p15':count[15],\
+                        'p16':count[16],'p17':count[17],'p18':count[18],'p19':count[19],'p20':count[20],\
+                        'p21':count[21],'p22':count[22],'p23':count[23],'p24':count[24],'p25':count[25],\
+                        'p26':count[26],'p27':count[27],'p28':count[28],'p29':count[29],'p30':count[30],\
+                        'p31':count[31],'p32':count[32],'p01o':countori[1],'p02o':countori[2],'p03o':countori[3],'p04o':countori[4],\
+                        'p05o':countori[5],'p06o':countori[6],'p07o':countori[7],'p08o':countori[8],'p09o':countori[9],'p10o':countori[10],\
+                        'p11o':countori[11],'p12o':countori[12],'p13o':countori[13],'p14o':countori[14],'p15o':countori[15],\
+                        'p16o':countori[16],'p17o':countori[17],'p18o':countori[18],'p19o':countori[19],'p20o':countori[20],\
+                        'p21o':countori[21],'p22o':countori[22],'p23o':countori[23],'p14o':countori[24],'p25o':countori[25],\
+                        'p26o':countori[26],'p27o':countori[27],'p28o':countori[28],'p19o':countori[29],'p30o':countori[30],\
+                        'p31o':countori[31],'p32o':countori[32],'M':M,'UM':UM,'Mo':Mo,'UMo':UMo,'strand':strand}, index=[0])    
+    if w==6 and not optional:
         opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
                         'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p09':count[9],'p10':count[10],\
                         'p11':count[11],'p12':count[12],'p13':count[13],'p14':count[14],'p15':count[15],\
@@ -137,6 +204,34 @@ def outwindow(pat,pos,chrom,w,M,UM,mC=4,strand='f'):
                         'p51':count[51],'p52':count[52],'p53':count[53],'p54':count[54],'p55':count[55],\
                         'p56':count[56],'p57':count[57],'p58':count[58],'p59':count[59],'p60':count[60],\
                         'p61':count[61],'p62':count[62],'p63':count[63],'p64':count[64],'M':M,'UM':UM,\
+                       'strand':strand}, index=[0])    
+    if w==6 and optional:
+            opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
+                        'p05':count[5],'p06':count[6],'p07':count[7],'p08':count[8],'p09':count[9],'p10':count[10],\
+                        'p11':count[11],'p12':count[12],'p13':count[13],'p14':count[14],'p15':count[15],\
+                        'p16':count[16],'p17':count[17],'p18':count[18],'p19':count[19],'p20':count[20],\
+                        'p21':count[21],'p22':count[22],'p23':count[23],'p24':count[24],'p25':count[25],\
+                        'p26':count[26],'p27':count[27],'p28':count[28],'p29':count[29],'p30':count[30],\
+                        'p31':count[31],'p32':count[32],'p33':count[33],'p34':count[34],'p35':count[35],\
+                        'p36':count[36],'p37':count[37],'p38':count[38],'p39':count[39],'p40':count[40],\
+                        'p41':count[41],'p42':count[42],'p43':count[43],'p44':count[44],'p45':count[45],\
+                        'p46':count[46],'p47':count[47],'p48':count[48],'p49':count[49],'p50':count[50],\
+                        'p51':count[51],'p52':count[52],'p53':count[53],'p54':count[54],'p55':count[55],\
+                        'p56':count[56],'p57':count[57],'p58':count[58],'p59':count[59],'p60':count[60],\
+                        'p61':count[61],'p62':count[62],'p63':count[63],'p64':count[64],'p01o':countori[1],'p02o':countori[2],\
+                        'p03o':countori[3],'p04o':countori[4],\
+                        'p05o':countori[5],'p06o':countori[6],'p07o':countori[7],'p08o':countori[8],'p09o':countori[9],'p10o':countori[10],\
+                        'p11o':countori[11],'p12o':countori[12],'p13o':countori[13],'p14o':countori[14],'p15o':countori[15],\
+                        'p16o':countori[16],'p17o':countori[17],'p18o':countori[18],'p19o':countori[19],'p20o':countori[20],\
+                        'p21o':countori[21],'p22o':countori[22],'p23o':countori[23],'p14o':countori[24],'p25o':countori[25],\
+                        'p26o':countori[26],'p27o':countori[27],'p28o':countori[28],'p19o':countori[29],'p30o':countori[30],\
+                        'p31o':countori[31],'p32o':countori[32],'p33o':countori[33],'p34o':countori[34],\
+                        'p35o':countori[35],'p36o':countori[36],'p37o':countori[37],'p38o':countori[38],'p39o':countori[39],'p40o':countori[40],\
+                        'p41o':countori[41],'p42o':countori[42],'p43o':countori[43],'p44o':countori[44],'p45o':countori[45],\
+                        'p46o':countori[46],'p47o':countori[47],'p48o':countori[48],'p49o':countori[49],'p50o':countori[50],\
+                        'p51o':countori[51],'p52o':countori[52],'p53o':countori[53],'p54o':countori[54],'p55o':countori[55],\
+                        'p56o':countori[56],'p57o':countori[57],'p58o':countori[58],'p59o':countori[59],'p60o':countori[60],\
+                        'p61o':countori[61],'p62o':countori[62],'p63o':countori[63],'p64o':countori[64],'M':M,'UM':UM,'Mo':Mo,'UMo':UMo,\
                        'strand':strand}, index=[0])    
     
     return opt
@@ -167,31 +262,31 @@ def impute(window,w):
     return window 
 
 
-def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
+def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False,optional=False,folder='MeHdata'):
     filename, file_extension = os.path.splitext(bamfile)
     coverage = cov_context = 0
     # load bamfile
-    samfile = pysam.AlignmentFile("MeHdata/%s.bam" % (filename), "rb")
+    samfile = pysam.AlignmentFile("%s/%s.bam" % (folder,filename), "rb")
     # load reference genome
-    fastafile = pysam.FastaFile('MeHdata/%s.fa' % fa)
+    fastafile = pysam.FastaFile('%s/%s.fa' % (folder,fa))
     
     # initialise data frame for genome screening (load C from bam file)
     aggreR = aggreC = pd.DataFrame(columns=['Qname'])
     
     # if user wants to output compositions of methylation patterns at every eligible window, initialise data frame
 
-    if w==3:
+    if w==3 and not optional:
         ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
                         'p05','p06','p07','p08','M','UM','strand'])     
-    if w==4:
+    if w==4 and not optional:
         ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
                         'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','M','UM','strand'])   
-    if w==5:
+    if w==5 and not optional:
         ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
                         'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
                         'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
-                        'M','UM','strand'])    
-    if w==6:
+                        'M','UM','Mo','UMo','strand'])    
+    if w==6 and not optional:
         ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
                         'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
                         'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
@@ -199,7 +294,7 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60',\
                         'p61','p62','p63','p64','M','UM','strand'])  
         
-    if w==7:
+    if w==7 and not optional:
         ResultPW = pd.DataFrame(columns=\
                         ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
                         ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
@@ -208,8 +303,37 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                          ,'p65','p66','p67','p68','p69','p70','p71','p72','p73','p74','p75','p76','p77','p78','p79','p80','p81','p82','p83','p84','p85','p86'\
                          ,'p87','p88','p89','p90','p91','p92','p93','p94','p95','p96','p97','p98','p99','p100','p101','p102','p103','p104'\
                         ,'p105','p106','p107','p108','p109','p120','p121','p122','p123','p124','p125','p126','p127','p128','strand'])
-
     
+    if w==3 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','M','UM','Mo','UMo','strand'])     
+    if w==4 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','M','UM','Mo','UMo','strand'])   
+    
+    if w==5 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','p17o','p18o',\
+                        'p19o','p20o','p21o','p22o','p23o','p24o','p25o','p26o','p27o','p28o','p29o','p30o','p31o','p32o',\
+                        'M','UM','Mo','UMo','strand'])    
+    if w==6 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46',\
+                        'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60',\
+                        'p61','p62','p63','p64','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','p17o','p18o',\
+                        'p19o','p20o','p21o','p22o','p23o','p24o','p25o','p26o','p27o','p28o','p29o','p30o','p31o','p32o',\
+                        'p33o','p34o','p35o','p36o','p37o','p38o','p39o','p40o','p41o','p42o','p43o','p44o','p45o','p46o',\
+                        'p47o','p48o','p49o','p50o','p51o','p52o','p53o','p54o','p55o','p56o','p57o','p58o','p59o','p60o',\
+                        'p61o','p62o','p63o','p64o','M','UM','Mo','UMo','strand'])  
+        
+
 
     neverr = never = True
     
@@ -282,17 +406,20 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
                 # overwrite imputed window
-                meth = methtemp.copy()
+                # meth = methtemp.copy()
                 # Evaluate methylation level and methylation heterogeneity and append to result
                 for i in range(0,w,1): # w windows
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
                     # check if enough complete patterns for evaluating MeH
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
+                        toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
                         ResultPW=ResultPW.append(toappend)
 
                 # remove 1 column
@@ -320,19 +447,24 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()
+                # meth = methtemp.copy()
                 # compute coverage and output summary
                 # for i in range(0,meth.shape[1]-w+1,1):
                 # if i<w:
                 for i in range(0,w,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
+                    # check if enough complete patterns for evaluating MeH
+                        toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
                         ResultPW=ResultPW.append(toappend)
+
                 aggreR = aggreR.drop(meth.columns[0:1],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
 
@@ -356,20 +488,25 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()        
+                # meth = methtemp.copy()        
                 # compute coverage and output summary
                 for i in range(w-1,2*w-1,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
+                    # check if enough complete patterns for evaluating MeH
+                        toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
                         ResultPW=ResultPW.append(toappend)
 
+
                         if ResultPW.shape[0] % 100000 == 1:   
-                            ResultPW.to_csv(r"MeHdata/CG_%s_%s.csv"%(filename,chrom),index = False, header=True)
+                            ResultPW.to_csv(r"%s/CG_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
                             if not silence: 
                                 print("Checkpoint CG. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
                 aggreC = aggreC.drop(meth.columns[0:w],axis=1)
@@ -395,63 +532,69 @@ def CGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()        
+                # meth = methtemp.copy()        
                 # compute coverage and output summary
                 for i in range(w-1,2*w-1,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
+                    # check if enough complete patterns for evaluating MeH
+                        toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
                         ResultPW=ResultPW.append(toappend)
+
                         if ResultPW.shape[0] % 100000 == 1:   
-                            ResultPW.to_csv(r"MeHdata/CG_%s_%s.csv"%(filename,chrom),index = False, header=True)
+                            ResultPW.to_csv(r"%s/CG_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
 
                 aggreR = aggreR.drop(meth.columns[0:w],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
 
         if ResultPW.shape[0]>0:   
-            ResultPW.to_csv(r"MeHdata/CG_%s_%s.csv"%(filename,chrom),index = False, header=True)
+            ResultPW.to_csv(r"%s/CG_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
 
         return filename, coverage, cov_context, 'CG'        
         print("Done CG for file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
 
     #samfile.close()  
     
-def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
+def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False,optional=False,folder='MeHdata',minML=0.05):
     filename, file_extension = os.path.splitext(bamfile)
     coverage = cov_context = 0
     # load bamfile
-    samfile = pysam.AlignmentFile("MeHdata/%s.bam" % (filename), "rb")
+    samfile = pysam.AlignmentFile("%s/%s.bam" % (folder,filename), "rb")
     # load reference genome
-    fastafile = pysam.FastaFile('MeHdata/%s.fa' % fa)
+    fastafile = pysam.FastaFile('%s/%s.fa' % (folder,fa))
     
     # initialise data frame for genome screening (load C from bam file)
     aggreR = aggreC = pd.DataFrame(columns=['Qname'])
     
     # if user wants to output compositions of methylation patterns at every eligible window, initialise data frame
-    if w==3:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','strand'])
-    if w==4:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11',\
-                         'p12','p13','p14','p15','p16','strand'])
-    if w==5:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
-                        ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
-                        'p29','p30','p31','p32','strand'])
-    if w==6:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
-                        ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
-                        'p29','p30','p31','p32','p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46'\
-                         ,'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60','p61','p62','p63','p64'\
-                         ,'strand'])
-    if w==7:
+
+    if w==3 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','M','UM','strand'])     
+    if w==4 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','M','UM','strand'])   
+    if w==5 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'M','UM','Mo','UMo','strand'])    
+    if w==6 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46',\
+                        'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60',\
+                        'p61','p62','p63','p64','M','UM','strand'])  
+        
+    if w==7 and not optional:
         ResultPW = pd.DataFrame(columns=\
                         ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
                         ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
@@ -460,8 +603,38 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                          ,'p65','p66','p67','p68','p69','p70','p71','p72','p73','p74','p75','p76','p77','p78','p79','p80','p81','p82','p83','p84','p85','p86'\
                          ,'p87','p88','p89','p90','p91','p92','p93','p94','p95','p96','p97','p98','p99','p100','p101','p102','p103','p104'\
                         ,'p105','p106','p107','p108','p109','p120','p121','p122','p123','p124','p125','p126','p127','p128','strand'])
-
     
+    if w==3 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','M','UM','Mo','UMo','strand'])     
+    if w==4 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','M','UM','Mo','UMo','strand'])   
+    
+    if w==5 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','p17o','p18o',\
+                        'p19o','p20o','p21o','p22o','p23o','p24o','p25o','p26o','p27o','p28o','p29o','p30o','p31o','p32o',\
+                        'M','UM','Mo','UMo','strand'])    
+    if w==6 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46',\
+                        'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60',\
+                        'p61','p62','p63','p64','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','p17o','p18o',\
+                        'p19o','p20o','p21o','p22o','p23o','p24o','p25o','p26o','p27o','p28o','p29o','p30o','p31o','p32o',\
+                        'p33o','p34o','p35o','p36o','p37o','p38o','p39o','p40o','p41o','p42o','p43o','p44o','p45o','p46o',\
+                        'p47o','p48o','p49o','p50o','p51o','p52o','p53o','p54o','p55o','p56o','p57o','p58o','p59o','p60o',\
+                        'p61o','p62o','p63o','p64o','M','UM','Mo','UMo','strand'])  
+        
+
+
     neverr = never = True
     
     if samfile.is_valid_reference_name(chrom):
@@ -521,17 +694,24 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()
+                # meth = methtemp.copy()
                 # compute coverage and output summary
                 for i in range(0,w,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        if M/depth > minML:
+                    # check if enough complete patterns for evaluating MeH
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
+
 
                 aggreC = aggreC.drop(meth.columns[0:1],axis=1)
                 aggreC.dropna(axis = 0, thresh=2, inplace = True)
@@ -556,17 +736,24 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()
+                # meth = methtemp.copy()
                 # compute coverage and output summary
                 for i in range(0,w,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        if M/depth > minML:
+                    # check if enough complete patterns for evaluating MeH
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
+
                 aggreR = aggreR.drop(meth.columns[0:1],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
 
@@ -591,22 +778,29 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()        
+                # meth = methtemp.copy()
                 # compute coverage and output summary
-                for i in range(w-1,2*w-1,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                for i in range(0,w,1):
+                    window = methtemp.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        if M/depth > minML:
+                    # check if enough complete patterns for evaluating MeH
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
 
-                        if ResultPW.shape[0] % 100000 == 1:   
-                            ResultPW.to_csv(r"MeHdata/CHH_%s_%s.csv"%(filename,chrom),index = False, header=True)
-                            if not silence: 
-                                print("Checkpoint CHH. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
+
+                            if ResultPW.shape[0] % 100000 == 1:   
+                                ResultPW.to_csv(r"%s/CHH_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
+                                if not silence: 
+                                    print("Checkpoint CHH. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
 
                 aggreC = aggreC.drop(meth.columns[0:w],axis=1)
                 aggreC.dropna(axis = 0, thresh=2, inplace = True)
@@ -630,21 +824,27 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()        
+                # meth = methtemp.copy()
                 # compute coverage and output summary
-                for i in range(w-1,2*w-1,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                for i in range(0,w,1):
+                    window = methtemp.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
-                        if ResultPW.shape[0] % 100000 == 1:
-                            ResultPW.to_csv(r"MeHdata/CHH_%s_%s.csv"%(filename,chrom),index = False, header=True)
-                            if not silence: 
-                                print("Checkpoint CHH. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
+                        if M/depth > minML:
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
+
+                            if ResultPW.shape[0] % 100000 == 1:
+                                ResultPW.to_csv(r"%s/CHH_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
+                                if not silence: 
+                                    print("Checkpoint CHH. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
 
                 aggreR = aggreR.drop(meth.columns[0:w],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
@@ -652,42 +852,43 @@ def CHHgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                 #total += w 
 
         if ResultPW.shape[0]>0:
-            ResultPW.to_csv(r"MeHdata/CHH_%s_%s.csv"%(filename,chrom),index = False, header=True)
+            ResultPW.to_csv(r"%s/CHH_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
         return sample, coverage, cov_context, 'CHH'                        
         print("Done CHH for file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos))
 
-def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
+def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False,optional=False,folder='MeHdata',minML=0.05):
     filename, file_extension = os.path.splitext(bamfile)
     coverage = cov_context = 0
     # load bamfile
-    samfile = pysam.AlignmentFile("MeHdata/%s.bam" % (filename), "rb")
+    samfile = pysam.AlignmentFile("%s/%s.bam" % (folder,filename), "rb")
     # load reference genome
-    fastafile = pysam.FastaFile('MeHdata/%s.fa' % fa)
+    fastafile = pysam.FastaFile('%s/%s.fa' % (folder,fa))
     
     # initialise data frame for genome screening (load C from bam file)
     aggreR = aggreC = pd.DataFrame(columns=['Qname'])
     
     # if user wants to output compositions of methylation patterns at every eligible window, initialise data frame
-    if w==3:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','strand'])
-    if w==4:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11',\
-                         'p12','p13','p14','p15','p16','strand'])
-    if w==5:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
-                        ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
-                        'p29','p30','p31','p32','strand'])
-    if w==6:
-        ResultPW = pd.DataFrame(columns=\
-                        ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
-                        ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
-                        'p29','p30','p31','p32','p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46'\
-                         ,'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60','p61','p62','p63','p64'\
-                         ,'strand'])
-    if w==7:
+
+    if w==3 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','M','UM','strand'])     
+    if w==4 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','M','UM','strand'])   
+    if w==5 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'M','UM','Mo','UMo','strand'])    
+    if w==6 and not optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46',\
+                        'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60',\
+                        'p61','p62','p63','p64','M','UM','strand'])  
+        
+    if w==7 and not optional:
         ResultPW = pd.DataFrame(columns=\
                         ['chrom','pos','M','UM','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16'\
                         ,'p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27','p28',\
@@ -696,8 +897,37 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                          ,'p65','p66','p67','p68','p69','p70','p71','p72','p73','p74','p75','p76','p77','p78','p79','p80','p81','p82','p83','p84','p85','p86'\
                          ,'p87','p88','p89','p90','p91','p92','p93','p94','p95','p96','p97','p98','p99','p100','p101','p102','p103','p104'\
                         ,'p105','p106','p107','p108','p109','p120','p121','p122','p123','p124','p125','p126','p127','p128','strand'])
-
     
+    if w==3 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','M','UM','Mo','UMo','strand'])     
+    if w==4 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','M','UM','Mo','UMo','strand'])   
+    
+    if w==5 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','p17o','p18o',\
+                        'p19o','p20o','p21o','p22o','p23o','p24o','p25o','p26o','p27o','p28o','p29o','p30o','p31o','p32o',\
+                        'M','UM','Mo','UMo','strand'])    
+    if w==6 and optional:
+        ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
+                        'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
+                        'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
+                        'p33','p34','p35','p36','p37','p38','p39','p40','p41','p42','p43','p44','p45','p46',\
+                        'p47','p48','p49','p50','p51','p52','p53','p54','p55','p56','p57','p58','p59','p60',\
+                        'p61','p62','p63','p64','p01o','p02o','p03o','p04o',\
+                        'p05o','p06o','p07o','p08o','p09o','p10o','p11o','p12o','p13o','p14o','p15o','p16o','p17o','p18o',\
+                        'p19o','p20o','p21o','p22o','p23o','p24o','p25o','p26o','p27o','p28o','p29o','p30o','p31o','p32o',\
+                        'p33o','p34o','p35o','p36o','p37o','p38o','p39o','p40o','p41o','p42o','p43o','p44o','p45o','p46o',\
+                        'p47o','p48o','p49o','p50o','p51o','p52o','p53o','p54o','p55o','p56o','p57o','p58o','p59o','p60o',\
+                        'p61o','p62o','p63o','p64o','M','UM','Mo','UMo','strand'])  
+        
+
     neverr = never = True
     
     start=datetime.datetime.now()
@@ -762,17 +992,23 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()
+                # meth = methtemp.copy()
                 # compute coverage and output summary
                 for i in range(0,w,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        if M/depth > minML:
+
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                                chrom=chrom,strand='f',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
+
 
                 aggreC = aggreC.drop(meth.columns[0:1],axis=1)
                 aggreC.dropna(axis = 0, thresh=2, inplace = True)
@@ -796,17 +1032,23 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()
+                # meth = methtemp.copy()
                 # compute coverage and output summary
                 for i in range(0,w,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        
+                        if M/depth > minML:
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                                chrom=chrom,strand='r',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
+
 
                 aggreR = aggreR.drop(meth.columns[0:1],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True)
@@ -832,22 +1074,30 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()        
+                # cover original matrix
+                # meth = methtemp.copy() 
+                
                 # compute coverage and output summary
                 for i in range(w-1,2*w-1,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='f',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        if M/depth > minML:
+                    
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                                chrom=chrom,strand='f',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
 
-                        if ResultPW.shape[0] % 100000:
-                            ResultPW.to_csv(r"MeHdata/CHG_%s_%s.csv"%(filename,chrom),index = False, header=True)
-                            if not silence: 
-                                print("Checkpoint CHG. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos+1))
+
+                            if ResultPW.shape[0] % 100000:
+                                ResultPW.to_csv(r"%s/CHG_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
+                                if not silence: 
+                                    print("Checkpoint CHG. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos+1))
 
                 aggreC = aggreC.drop(meth.columns[0:w],axis=1)
                 aggreC.dropna(axis = 0, thresh=2, inplace = True)
@@ -871,28 +1121,36 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False):
                         window=pd.DataFrame(data=impute(window,w))
                         ind=np.where(window.notnull().sum(axis=1)==w)[0]
                         methtemp.loc[methtemp.iloc[ind,:].index,meth.iloc[:,range(i,i+w)].columns]=window.loc[ind,:].values
-                meth = methtemp.copy()        
+                
+                # cover original matrix
+                # meth = methtemp.copy() 
+                
                 # compute coverage and output summary
                 for i in range(w-1,2*w-1,1):
-                    window = meth.iloc[:,range(i,i+w)].values
+                    windowold = meth.iloc[:,range(i,i+w)].values
+                    window = methtemp.iloc[:,range(i,i+w)].values
                     M=(window==1).sum(axis=0)[0]
                     UM=(window==0).sum(axis=0)[0]
+                    Mo=(windowold==1).sum(axis=0)[0]
+                    UMo=(windowold==0).sum(axis=0)[0]
                     depth=M+UM
                     if depth>=mC:
-                        toappend=outwindow(window,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
-                                            chrom=chrom,strand='r',mC=mC,M=M,UM=UM)
-                        ResultPW=ResultPW.append(toappend)
+                        if M/depth > minML:
+                            toappend=outwindow(window,patori=windowold,w=w,pos=meth.iloc[:,range(i,i+w)].columns[0],\
+                                                chrom=chrom,strand='r',mC=mC,M=M,UM=UM,Mo=Mo,UMo=UMo,optional=optional)
+                            ResultPW=ResultPW.append(toappend)
 
-                        if ResultPW.shape[0] % 100000 == 1:   
-                            ResultPW.to_csv(r"MeHdata/CHG_%s_%s.csv"%(filename,chrom),index = False, header=True)
-                            if not silence: 
-                                print("Checkpoint CHG. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos+1))
+
+                            if ResultPW.shape[0] % 100000 == 1:   
+                                ResultPW.to_csv(r"MeHdata/CHG_%s_%s.csv"%(filename,chrom),index = False, header=True)
+                                if not silence: 
+                                    print("Checkpoint CHG. For file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos+1))
 
                 aggreR = aggreR.drop(meth.columns[0:w],axis=1)
                 aggreR.dropna(axis = 0, thresh=2, inplace = True) 
 
         if ResultPW.shape[0]>0:   
-            ResultPW.to_csv(r"MeHdata/CHG_%s_%s.csv"%(filename,chrom),index = False, header=True)
+            ResultPW.to_csv(r"%s/CHG_%s_%s.csv"%(folder,filename,chrom),index = False, header=True)
 
         return filename, coverage, cov_context, 'CHG'
         print("Done CHG for file %s: %s results obtained up to position chr %s: %s." % (filename,ResultPW.shape[0],chrom,pileupcolumn.pos+1))
@@ -942,6 +1200,8 @@ parser.add_argument("--CHG", default=False, action='store_true', help='Include g
 parser.add_argument("--CHH", default=False, action='store_true', help='Include genomic context CHH')
 parser.add_argument("-mC", "--mindepth",type=int, default=4, help='Minimum depth per cytosine')
 parser.add_argument('-f', "--foldername", default='MeHdata', type = str, help = 'Folder name of the location of input files' )
+parser.add_argument('--opt', default=False, action='store_true', help='Output original count of patterns')
+parser.add_argument('-mML', "--minML",type=float,default=0.05, help='Minimum methylation level for CHG/CHH results')
 
 
 args = parser.parse_args()
@@ -984,7 +1244,7 @@ if __name__ == "__main__":
     #start=t.time()
     if args.CG:
         con='CG'
-        CG=Parallel(n_jobs=args.cores)(delayed(CGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername) for bam in bam_list for c in chromosomes)
         
         for file in bam_list:
             for c in chromosomes:
@@ -1011,7 +1271,7 @@ if __name__ == "__main__":
           
     if args.CHG:
         con='CHG'
-        CG=Parallel(n_jobs=args.cores)(delayed(CHGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CHGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername,minML=minML) for bam in bam_list for c in chromosomes)
         
         logm("Merging within samples for CHG.")  
         # not into bins of 400bp
@@ -1020,14 +1280,14 @@ if __name__ == "__main__":
                 res_dir = Folder + con + '_'+ file + '.csv'
                 toapp_dir = Folder + con + '_'+ file + '_'+ c + '.csv'
                 if os.path.exists(res_dir) and os.path.exists(toapp_dir):
-                    Tomod = pd.read_csv(res_dir) 
+                    Tomod = pd.read_csv(res_dir)
                     Toappend = pd.read_csv(toapp_dir)
                     Tomod = Tomod.append(Toappend)
-                    Tomod.to_csv(res_dir,index = False,header=True)
+                    Tomod.to_csv(res_dir,index = False, header = True)
                     os.remove(toapp_dir)
                 elif os.path.exists(toapp_dir):
                     Toappend = pd.read_csv(toapp_dir)
-                    Toappend.to_csv(res_dir,index = False,header=True)
+                    Toappend.to_csv(res_dir,index = False,header = True)
                     os.remove(toapp_dir)
  
  
@@ -1040,7 +1300,7 @@ if __name__ == "__main__":
         
     if args.CHH:
         con='CHH'
-        CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername,minML=minML) for bam in bam_list for c in chromosomes)
         
         for file in bam_list:
             for c in chromosomes:
@@ -1074,4 +1334,3 @@ if __name__ == "__main__":
         #logm('Sample '+str(topp.iloc[i,1])+' has coverage '+str(topp.iloc[i,2])+' for context '+str(topp.iloc[i,0])+' out of data coverage '+str(topp.iloc[i,3])+ '.')
 
 
-# FINAL FINAL Nov3
