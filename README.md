@@ -208,8 +208,8 @@ Use the scrpit **MeHscr.py** to calculated the methylation heterogeneity.
 
 ```ruby
 $ python bsimp.py -h
-usage: bsimpw4.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG] [--CHG] [--CHH]
-                  [-mC MINDEPTH] [-f FOLDERNAME] [--opt]
+usage: bsimp.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG] [--CHG] [--CHH]
+                [-mC MINDEPTH] [-f FOLDERNAME] [--opt]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -239,6 +239,13 @@ optional arguments:
 # 'CG', 'CHG' and 'CHH' with window size of 4 cytosines and minimum depth for output of 8 reads
 # between methylation patterns and 8 cores parallel processing
     python bsimp.py -w 4 -c 8 --CG --CHG --CHH -mC 8 -f MeHdata
+```
+
+```ruby
+# 'CG', 'CHG' and 'CHH' with window size of 4 cytosines and minimum depth for output of 8 reads
+# between methylation patterns and 8 cores parallel processing, minimum methylation levels for CHG/CHH 
+# outputs and output original counts of methylation patterns (prior to imputation)
+    python bsimp.py -w 4 -c 8 --CG --CHG --CHH -mC 8 -f MeHdata -mML 0.05 --o
 ```
 
 > The programme is running at folder "/MeHdata"
