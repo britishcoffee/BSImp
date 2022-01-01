@@ -208,8 +208,8 @@ Use the scrpit **MeHscr.py** to calculated the methylation heterogeneity.
 
 ```ruby
 $ python bsimp.py -h
-usage: bsimp.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG] [--CHG] [--CHH]
-                [-mC MINDEPTH] [-f FOLDERNAME]
+usage: bsimpw4.py [-h] [-w WINDOWSIZE] [-c CORES] [--CG] [--CHG] [--CHH]
+                  [-mC MINDEPTH] [-f FOLDERNAME] [--opt]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -224,6 +224,7 @@ optional arguments:
                         Minimum depth per cytosine
   -f FOLDERNAME, --foldername FOLDERNAME
                         Folder name of the location of input files
+  --opt                 Output original count of patterns
 
 ```
 
