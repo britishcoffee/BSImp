@@ -225,6 +225,8 @@ optional arguments:
   -f FOLDERNAME, --foldername FOLDERNAME
                         Folder name of the location of input files
   --opt                 Output original count of patterns
+  -mML MINML, --minML MINML
+                        minimum methylation level for the consideration of examination of windows for CHG and CHH contexts
 
 ```
 
