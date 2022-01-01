@@ -187,8 +187,8 @@ def outwindow(pat,patori,pos,chrom,w,M,UM,Mo,UMo,mC=4,strand='f',optional=False)
                         'p05o':countori[5],'p06o':countori[6],'p07o':countori[7],'p08o':countori[8],'p09o':countori[9],'p10o':countori[10],\
                         'p11o':countori[11],'p12o':countori[12],'p13o':countori[13],'p14o':countori[14],'p15o':countori[15],\
                         'p16o':countori[16],'p17o':countori[17],'p18o':countori[18],'p19o':countori[19],'p20o':countori[20],\
-                        'p21o':countori[21],'p22o':countori[22],'p23o':countori[23],'p14o':countori[24],'p25o':countori[25],\
-                        'p26o':countori[26],'p27o':countori[27],'p28o':countori[28],'p19o':countori[29],'p30o':countori[30],\
+                        'p21o':countori[21],'p22o':countori[22],'p23o':countori[23],'p24o':countori[24],'p25o':countori[25],\
+                        'p26o':countori[26],'p27o':countori[27],'p28o':countori[28],'p29o':countori[29],'p30o':countori[30],\
                         'p31o':countori[31],'p32o':countori[32],'M':M,'UM':UM,'Mo':Mo,'UMo':UMo,'strand':strand}, index=[0])    
     if w==6 and not optional:
         opt=pd.DataFrame({'chrom':chrom,'pos':pos,'p01':count[1],'p02':count[2],'p03':count[3],'p04':count[4],\
@@ -223,8 +223,8 @@ def outwindow(pat,patori,pos,chrom,w,M,UM,Mo,UMo,mC=4,strand='f',optional=False)
                         'p05o':countori[5],'p06o':countori[6],'p07o':countori[7],'p08o':countori[8],'p09o':countori[9],'p10o':countori[10],\
                         'p11o':countori[11],'p12o':countori[12],'p13o':countori[13],'p14o':countori[14],'p15o':countori[15],\
                         'p16o':countori[16],'p17o':countori[17],'p18o':countori[18],'p19o':countori[19],'p20o':countori[20],\
-                        'p21o':countori[21],'p22o':countori[22],'p23o':countori[23],'p14o':countori[24],'p25o':countori[25],\
-                        'p26o':countori[26],'p27o':countori[27],'p28o':countori[28],'p19o':countori[29],'p30o':countori[30],\
+                        'p21o':countori[21],'p22o':countori[22],'p23o':countori[23],'p24o':countori[24],'p25o':countori[25],\
+                        'p26o':countori[26],'p27o':countori[27],'p28o':countori[28],'p29o':countori[29],'p30o':countori[30],\
                         'p31o':countori[31],'p32o':countori[32],'p33o':countori[33],'p34o':countori[34],\
                         'p35o':countori[35],'p36o':countori[36],'p37o':countori[37],'p38o':countori[38],'p39o':countori[39],'p40o':countori[40],\
                         'p41o':countori[41],'p42o':countori[42],'p43o':countori[43],'p44o':countori[44],'p45o':countori[45],\
@@ -879,7 +879,7 @@ def CHGgenome_scr(bamfile,chrom,w,fa,mC=4,silence=False,optional=False,folder='M
         ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
                         'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
                         'p19','p20','p21','p22','p23','p24','p25','p26','p27','p28','p29','p30','p31','p32',\
-                        'M','UM','Mo','UMo','strand'])    
+                        'M','UM','strand'])    
     if w==6 and not optional:
         ResultPW=pd.DataFrame(columns=['chrom','pos','p01','p02','p03','p04',\
                         'p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18',\
@@ -1271,7 +1271,7 @@ if __name__ == "__main__":
           
     if args.CHG:
         con='CHG'
-        CG=Parallel(n_jobs=args.cores)(delayed(CHGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername,minML=minML) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CHGgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername,minML=args.minML) for bam in bam_list for c in chromosomes)
         
         logm("Merging within samples for CHG.")  
         # not into bins of 400bp
@@ -1300,7 +1300,7 @@ if __name__ == "__main__":
         
     if args.CHH:
         con='CHH'
-        CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername,minML=minML) for bam in bam_list for c in chromosomes)
+        CG=Parallel(n_jobs=args.cores)(delayed(CHHgenome_scr)(bam,chrom=c,w=args.windowsize,fa=fa,mC=args.mindepth,optional=args.opt,folder=args.foldername,minML=args.minML) for bam in bam_list for c in chromosomes)
         
         for file in bam_list:
             for c in chromosomes:
@@ -1332,5 +1332,4 @@ if __name__ == "__main__":
     for i in range(topp.shape[0]):
         print('Sample', topp.iloc[i,1],'has coverage',topp.iloc[i,2],'for context',topp.iloc[i,0],'out of data coverage',topp.iloc[i,3])
         #logm('Sample '+str(topp.iloc[i,1])+' has coverage '+str(topp.iloc[i,2])+' for context '+str(topp.iloc[i,0])+' out of data coverage '+str(topp.iloc[i,3])+ '.')
-
 
