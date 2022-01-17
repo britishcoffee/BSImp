@@ -9,7 +9,7 @@
 
 ### Publication
 
-[BSImp: imputing partially observed methylation patterns for evaluating methylation heterogeneity. journal. doi: (2022)]()
+[Ya-Ting Sabrina Chang, Ming-Ren Yen, Pao-Yang Chen (2022) BSImp: imputing partially observed methylation patterns for evaluating methylation heterogeneity Frontiers in Bioinformatics, Research Topic in Computational Methods for Analysis of DNA Methylation Data https://doi: 10.3389/fbinf.2022.815289]
 
 
 ## Pipeline
