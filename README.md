@@ -1,4 +1,4 @@
-# BSImp :
+# BSImp:
 
 :mega: Imputation recovers partially observed methylation patterns for the analysis of methylation heterogeneity at a large proportion of regions genomewide and also estimates methylation levels accurately.
 
